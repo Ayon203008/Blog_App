@@ -1,17 +1,13 @@
 import express, { NextFunction, Request, Response } from "express"
 import { Postcontroller } from "./post.controller"
+import auth, { UserRole } from "../../middleware/auth"
 
 const router = express.Router()
 
-const auth =()=>{
-  return  async (req:Request,res:Response,next:NextFunction)=>{
-        console.log(`This is a middleware`)
-        next()
-    }
-}
+// * Get method to get all post
+router.get("/",Postcontroller.getAllPost)
 
-
-
-router.post("/",auth(),Postcontroller.createPost)  
+router.post("/", auth(UserRole.USER), Postcontroller.createPost) 
+// * import everything from middleware
 
 export const postRouter = router
